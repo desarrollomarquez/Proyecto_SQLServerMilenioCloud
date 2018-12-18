@@ -1,0 +1,98 @@
+﻿@model MilenioCloudModel.Models.Colegio
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Colegio</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nit)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CodigoColegio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CodigoColegio)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CodigoDane)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CodigoDane)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Direccion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Direccion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Telefono)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Telefono)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FiniFiscal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FiniFiscal)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FfinFiscal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FfinFiscal)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UbicacionGeo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UbicacionGeo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Foto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Foto)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Codigo_Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

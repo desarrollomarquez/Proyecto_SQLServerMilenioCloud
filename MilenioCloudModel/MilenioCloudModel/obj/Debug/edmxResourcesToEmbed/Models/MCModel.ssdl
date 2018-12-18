@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MilenioCloudModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Colegio">
+    <Key>
+      <PropertyRef Name="Codigo_Id" />
+    </Key>
+    <Property Name="Codigo_Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Nit" Type="int" Nullable="false" />
+    <Property Name="Nombre" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="CodigoColegio" Type="int" Nullable="false" />
+    <Property Name="CodigoDane" Type="int" Nullable="false" />
+    <Property Name="Direccion" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Telefono" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="FiniFiscal" Type="date" Nullable="false" />
+    <Property Name="FfinFiscal" Type="date" Nullable="false" />
+    <Property Name="UbicacionGeo" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Foto" Type="varchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Colegio_Usuario">
+    <Key>
+      <PropertyRef Name="Colegio_Id" />
+      <PropertyRef Name="Usuario_Id" />
+    </Key>
+    <Property Name="Colegio_Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Usuario_Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="fecha_caducidad" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Estado" Type="bit" />
+    <Property Name="Descripcion" Type="varchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Departamento">
+    <Key>
+      <PropertyRef Name="Dane_Id" />
+    </Key>
+    <Property Name="Codigo_Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Dane_Id" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Nombre" Type="varchar" MaxLength="300" Nullable="false" />
+    <Property Name="Latitud" Type="varchar" MaxLength="50" />
+    <Property Name="Longitud" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Municipio">
+    <Key>
+      <PropertyRef Name="Dane_Id" />
+    </Key>
+    <Property Name="Codigo_Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Departamento_Id" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Dane_Id" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Nombre" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Latitud" Type="varchar" MaxLength="50" />
+    <Property Name="Longitud" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Poblado">
+    <Key>
+      <PropertyRef Name="Poblado_Id" />
+    </Key>
+    <Property Name="Codigo_Id" Type="uniqueidentifier" />
+    <Property Name="Municipio_Id" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Poblado_Id" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Nombre" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Tipo" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Latitud" Type="varchar" MaxLength="50" />
+    <Property Name="Longitud" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Rol">
+    <Key>
+      <PropertyRef Name="Codigo_Id" />
+    </Key>
+    <Property Name="Codigo_Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Nombre" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Estado" Type="bit" />
+    <Property Name="Descripcion" Type="varchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Usuario">
+    <Key>
+      <PropertyRef Name="Codigo_Id" />
+    </Key>
+    <Property Name="Codigo_Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="PasswordDecrip" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Estado" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Usuario_Rol">
+    <Key>
+      <PropertyRef Name="Usuario_Id" />
+      <PropertyRef Name="Rol_Id" />
+    </Key>
+    <Property Name="Usuario_Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Rol_Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="fecha_caducidad" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Estado" Type="bit" />
+    <Property Name="Descripcion" Type="varchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_cusuario">
+    <End Role="Usuario" Type="Self.Usuario" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Colegio_Usuario" Type="Self.Colegio_Usuario" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="Codigo_Id" />
+      </Principal>
+      <Dependent Role="Colegio_Usuario">
+        <PropertyRef Name="Usuario_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MDepartamento">
+    <End Role="Departamento" Type="Self.Departamento" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Municipio" Type="Self.Municipio" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Departamento">
+        <PropertyRef Name="Dane_Id" />
+      </Principal>
+      <Dependent Role="Municipio">
+        <PropertyRef Name="Departamento_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PMunicipio">
+    <End Role="Municipio" Type="Self.Municipio" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Poblado" Type="Self.Poblado" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Municipio">
+        <PropertyRef Name="Dane_Id" />
+      </Principal>
+      <Dependent Role="Poblado">
+        <PropertyRef Name="Municipio_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_rol">
+    <End Role="Rol" Type="Self.Rol" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Usuario_Rol" Type="Self.Usuario_Rol" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Rol">
+        <PropertyRef Name="Codigo_Id" />
+      </Principal>
+      <Dependent Role="Usuario_Rol">
+        <PropertyRef Name="Rol_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ucolegio">
+    <End Role="Colegio" Type="Self.Colegio" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Colegio_Usuario" Type="Self.Colegio_Usuario" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Colegio">
+        <PropertyRef Name="Codigo_Id" />
+      </Principal>
+      <Dependent Role="Colegio_Usuario">
+        <PropertyRef Name="Colegio_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_usuario">
+    <End Role="Usuario" Type="Self.Usuario" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Usuario_Rol" Type="Self.Usuario_Rol" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="Codigo_Id" />
+      </Principal>
+      <Dependent Role="Usuario_Rol">
+        <PropertyRef Name="Usuario_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="MilenioCloudModelStoreContainer">
+    <EntitySet Name="Colegio" EntityType="Self.Colegio" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Colegio_Usuario" EntityType="Self.Colegio_Usuario" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Departamento" EntityType="Self.Departamento" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Municipio" EntityType="Self.Municipio" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Poblado" EntityType="Self.Poblado" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Rol" EntityType="Self.Rol" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Usuario_Rol" EntityType="Self.Usuario_Rol" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_cusuario" Association="Self.FK_cusuario">
+      <End Role="Usuario" EntitySet="Usuario" />
+      <End Role="Colegio_Usuario" EntitySet="Colegio_Usuario" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MDepartamento" Association="Self.FK_MDepartamento">
+      <End Role="Departamento" EntitySet="Departamento" />
+      <End Role="Municipio" EntitySet="Municipio" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PMunicipio" Association="Self.FK_PMunicipio">
+      <End Role="Municipio" EntitySet="Municipio" />
+      <End Role="Poblado" EntitySet="Poblado" />
+    </AssociationSet>
+    <AssociationSet Name="FK_rol" Association="Self.FK_rol">
+      <End Role="Rol" EntitySet="Rol" />
+      <End Role="Usuario_Rol" EntitySet="Usuario_Rol" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ucolegio" Association="Self.FK_ucolegio">
+      <End Role="Colegio" EntitySet="Colegio" />
+      <End Role="Colegio_Usuario" EntitySet="Colegio_Usuario" />
+    </AssociationSet>
+    <AssociationSet Name="FK_usuario" Association="Self.FK_usuario">
+      <End Role="Usuario" EntitySet="Usuario" />
+      <End Role="Usuario_Rol" EntitySet="Usuario_Rol" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

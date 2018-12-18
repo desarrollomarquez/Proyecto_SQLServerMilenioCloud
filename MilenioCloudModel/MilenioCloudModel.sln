@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MilenioCloudModel", "MilenioCloudModel\MilenioCloudModel.csproj", "{50772193-05F8-4A04-BF90-450B28C92D3F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{50772193-05F8-4A04-BF90-450B28C92D3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50772193-05F8-4A04-BF90-450B28C92D3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50772193-05F8-4A04-BF90-450B28C92D3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50772193-05F8-4A04-BF90-450B28C92D3F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {94D48DC3-FA2F-420D-BE00-92733D6D421B}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="MilenioCloudModelStoreContainer" CdmEntityContainer="MilenioCloudEntities1">
+    <EntitySetMapping Name="Colegios">
+      <EntityTypeMapping TypeName="MilenioCloudModel.Colegio">
+        <MappingFragment StoreEntitySet="Colegio">
+          <ScalarProperty Name="Codigo_Id" ColumnName="Codigo_Id" />
+          <ScalarProperty Name="Nit" ColumnName="Nit" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="CodigoColegio" ColumnName="CodigoColegio" />
+          <ScalarProperty Name="CodigoDane" ColumnName="CodigoDane" />
+          <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+          <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+          <ScalarProperty Name="FiniFiscal" ColumnName="FiniFiscal" />
+          <ScalarProperty Name="FfinFiscal" ColumnName="FfinFiscal" />
+          <ScalarProperty Name="UbicacionGeo" ColumnName="UbicacionGeo" />
+          <ScalarProperty Name="Foto" ColumnName="Foto" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Colegio_Usuario">
+      <EntityTypeMapping TypeName="MilenioCloudModel.Colegio_Usuario">
+        <MappingFragment StoreEntitySet="Colegio_Usuario">
+          <ScalarProperty Name="Colegio_Id" ColumnName="Colegio_Id" />
+          <ScalarProperty Name="Usuario_Id" ColumnName="Usuario_Id" />
+          <ScalarProperty Name="fecha_caducidad" ColumnName="fecha_caducidad" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Departamentoes">
+      <EntityTypeMapping TypeName="MilenioCloudModel.Departamento">
+        <MappingFragment StoreEntitySet="Departamento">
+          <ScalarProperty Name="Codigo_Id" ColumnName="Codigo_Id" />
+          <ScalarProperty Name="Dane_Id" ColumnName="Dane_Id" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Latitud" ColumnName="Latitud" />
+          <ScalarProperty Name="Longitud" ColumnName="Longitud" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Municipios">
+      <EntityTypeMapping TypeName="MilenioCloudModel.Municipio">
+        <MappingFragment StoreEntitySet="Municipio">
+          <ScalarProperty Name="Codigo_Id" ColumnName="Codigo_Id" />
+          <ScalarProperty Name="Departamento_Id" ColumnName="Departamento_Id" />
+          <ScalarProperty Name="Dane_Id" ColumnName="Dane_Id" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Latitud" ColumnName="Latitud" />
+          <ScalarProperty Name="Longitud" ColumnName="Longitud" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Pobladoes">
+      <EntityTypeMapping TypeName="MilenioCloudModel.Poblado">
+        <MappingFragment StoreEntitySet="Poblado">
+          <ScalarProperty Name="Codigo_Id" ColumnName="Codigo_Id" />
+          <ScalarProperty Name="Municipio_Id" ColumnName="Municipio_Id" />
+          <ScalarProperty Name="Poblado_Id" ColumnName="Poblado_Id" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+          <ScalarProperty Name="Latitud" ColumnName="Latitud" />
+          <ScalarProperty Name="Longitud" ColumnName="Longitud" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Rols">
+      <EntityTypeMapping TypeName="MilenioCloudModel.Rol">
+        <MappingFragment StoreEntitySet="Rol">
+          <ScalarProperty Name="Codigo_Id" ColumnName="Codigo_Id" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Usuarios">
+      <EntityTypeMapping TypeName="MilenioCloudModel.Usuario">
+        <MappingFragment StoreEntitySet="Usuario">
+          <ScalarProperty Name="Codigo_Id" ColumnName="Codigo_Id" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="PasswordDecrip" ColumnName="PasswordDecrip" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Usuario_Rol">
+      <EntityTypeMapping TypeName="MilenioCloudModel.Usuario_Rol">
+        <MappingFragment StoreEntitySet="Usuario_Rol">
+          <ScalarProperty Name="Usuario_Id" ColumnName="Usuario_Id" />
+          <ScalarProperty Name="Rol_Id" ColumnName="Rol_Id" />
+          <ScalarProperty Name="fecha_caducidad" ColumnName="fecha_caducidad" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
