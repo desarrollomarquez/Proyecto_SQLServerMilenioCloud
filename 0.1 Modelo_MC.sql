@@ -1,10 +1,10 @@
 
-IF object_id('dbo.Colegio_Usuario') is not null
-   DROP TABLE dbo.Colegio_Usuario;
+IF object_id('dbo.Entidad_Usuario') is not null
+   DROP TABLE dbo.Entidad_Usuario;
 IF object_id('dbo.Usuario_Rol') is not null
    DROP TABLE dbo.Usuario_Rol;
-IF object_id('dbo.Colegio') is not null
-   DROP TABLE dbo.Colegio;
+IF object_id('dbo.Entidad') is not null
+   DROP TABLE dbo.Entidad;
 IF object_id('dbo.Usuario') is not null
    DROP TABLE dbo.Usuario;
 IF object_id('dbo.Rol') is not null
@@ -19,19 +19,19 @@ IF object_id('dbo.Departamento') is not null
   
   
     
- CREATE TABLE dbo.Colegio(
+ CREATE TABLE dbo.Entidad(
   Codigo_Id		 UNIQUEIDENTIFIER NOT NULL ,
   Nit			 INT  NOT NULL,
   Nombre		 VARCHAR(200) NOT NULL,
-  CodigoColegio  INT NOT NULL,
+  CodigoEntidad  INT NOT NULL,
   CodigoDane  	 INT NOT NULL,
   Direccion      VARCHAR(100) NOT NULL,
   Telefono       VARCHAR(20) NOT NULL,
-  FiniFiscal     DATE NOT NULL,
-  FfinFiscal     DATE NOT NULL,
+  FiniFiscal     DATETIME NOT NULL,
+  FfinFiscal     DATETIME NOT NULL,
   UbicacionGeo   VARCHAR(100) NOT NULL,
   Foto           VARCHAR(100) NOT NULL,
-  CONSTRAINT PK_Colegio primary key (Codigo_Id)
+  CONSTRAINT PK_Entidad primary key (Codigo_Id)
  );
 
   CREATE TABLE dbo.Usuario(
@@ -89,23 +89,23 @@ CREATE TABLE dbo.Poblado (
   CREATE TABLE dbo.Usuario_Rol(
   Usuario_Id		UNIQUEIDENTIFIER NOT NULL,
   Rol_Id			UNIQUEIDENTIFIER NOT NULL,
-  fecha_caducidad	VARCHAR(200)  NOT NULL,
-  Estado          BIT,
-  Descripcion     VARCHAR(200)  NOT NULL,
+  fecha_caducidad	DATETIME  NOT NULL,
+  Estado            BIT,
+  Descripcion       VARCHAR(200)  NOT NULL,
   CONSTRAINT PK_usuario_rol primary key (Usuario_Id, Rol_Id),
   CONSTRAINT FK_usuario FOREIGN KEY (Usuario_Id) REFERENCES Usuario (Codigo_Id) ON DELETE CASCADE,
   CONSTRAINT FK_rol FOREIGN KEY (Rol_Id) REFERENCES Rol (Codigo_Id) ON DELETE CASCADE
  );
 
  
-  CREATE TABLE dbo.Colegio_Usuario(
-  Colegio_Id		UNIQUEIDENTIFIER NOT NULL,
+  CREATE TABLE dbo.Entidad_Usuario(
+  Entidad_Id		UNIQUEIDENTIFIER NOT NULL,
   Usuario_Id		UNIQUEIDENTIFIER NOT NULL,
-  fecha_caducidad	VARCHAR(200)  NOT NULL,
+  fecha_caducidad	DATETIME  NOT NULL,
   Estado			BIT,
   Descripcion		VARCHAR(200)  NOT NULL,
-  CONSTRAINT PK_colegio_usuario primary key (Colegio_Id, Usuario_Id),
-  CONSTRAINT FK_ucolegio FOREIGN KEY (Colegio_Id) REFERENCES Colegio (Codigo_Id) ON DELETE CASCADE,
+  CONSTRAINT PK_entidad_usuario primary key (Entidad_Id, Usuario_Id),
+  CONSTRAINT FK_uentidad FOREIGN KEY (Entidad_Id) REFERENCES Entidad (Codigo_Id) ON DELETE CASCADE,
   CONSTRAINT FK_cusuario FOREIGN KEY (Usuario_Id) REFERENCES Usuario (Codigo_Id) ON DELETE CASCADE
  );
 
