@@ -5,15 +5,13 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE PROCEDURE [dbo].[sp_mc_insert]
+ALTER PROCEDURE [dbo].[sp_mc_insert]
    @TABLA       sysname,
    @PARAMETROS  sysname 
 AS
   
 SET NOCOUNT ON 
 
---DECLARE @TABLA		NVARCHAR(100) = 'Rol';
---DECLARE @PARAMETROS NVARCHAR(500)= 'johan@unal.edu.co, 123, 123, 1';
 DECLARE @CAMPOS		NVARCHAR(500);
 DECLARE @DATOS		NVARCHAR(500);
 DECLARE @QUERY		NVARCHAR(500);
@@ -30,7 +28,7 @@ SET @CANTIDAD_CAMPOS =  (SELECT COUNT(VALUE) - 1 FROM STRING_SPLIT(@CAMPOS, ',')
 IF @CAMPOS IS NULL
 	BEGIN
 	RAISERROR ('La tabla no existe', 16, 1);
-	SELECT @ret_code;
+	RETURN (1)
 	END
 
 ELSE 
@@ -41,7 +39,7 @@ ELSE
 						CAST(', ' AS VARCHAR(MAX)) + 
 						CASE 
 						WHEN ISNUMERIC(value) = 1 THEN  value
-						WHEN ISNUMERIC(value) = 1 THEN  value
+						WHEN ISDATE(value) = 1 THEN 'CAST('+''''+value+''''+' AS DATETIME )'
 						ELSE ''''+value+''''
 						END
 						FROM STRING_SPLIT(@PARAMETROS, ',')
@@ -50,13 +48,9 @@ ELSE
 				 )
 		
 		SET @QUERY = N'INSERT INTO '+@TABLA+' ( '+@CAMPOS +' ) VALUES ( NEWID(), '+@DATOS+' )';
-		--SET @QUERY = N' SELECT '+@CAMPOS+' FROM '+@TABLA;
-	
-
 		BEGIN TRY  
 			EXECUTE sp_executesql @QUERY;
-			SET @ret_code=1 ;
-			SELECT @ret_code;
+			RETURN (0);
 		END TRY
 		BEGIN CATCH  
 		SELECT   
@@ -68,8 +62,7 @@ ELSE
 	ELSE
 		BEGIN
 		RAISERROR ('Los parametros de entrada no coinciden con los campos de la tabla a insertar ', 16, 1);
-		SELECT @ret_code; 
-		END
-	  
+		RETURN (1); 
+		END	  
 END
 
