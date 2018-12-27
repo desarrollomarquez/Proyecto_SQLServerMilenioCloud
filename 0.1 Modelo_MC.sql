@@ -9,6 +9,8 @@ IF object_id('dbo.Usuario') is not null
    DROP TABLE dbo.Usuario;
 IF object_id('dbo.Telefono') is not null
    DROP TABLE dbo.Telefono;
+IF object_id('dbo.Licencia') is not null
+   DROP TABLE dbo.Licencia;
 IF object_id('dbo.Entidad') is not null
    DROP TABLE dbo.Entidad;
 IF object_id('dbo.Ubicacion') is not null
@@ -85,6 +87,21 @@ CREATE TABLE dbo.Ubicacion (
   CONSTRAINT PK_Entidad primary key (Codigo_Id),
   CONSTRAINT FK_EEntidad_Padre FOREIGN KEY (Entidad_Padre) REFERENCES Entidad (Codigo_Id),
   CONSTRAINT FK_EUbicacion FOREIGN KEY (Ubicacion_Id) REFERENCES Ubicacion (Codigo_Id) ON DELETE CASCADE
+ );
+
+
+  CREATE TABLE dbo.Licencia(
+  Codigo_Id			UNIQUEIDENTIFIER NOT NULL ,
+  Entidad_Id		UNIQUEIDENTIFIER,
+  NumeroLicencia	INT NOT NULL,
+  FiniVigencia      DATETIME NOT NULL,
+  FfinVigencia      DATETIME NOT NULL,
+  Estado			BIT,
+  CostoLicencia		VARCHAR(20) NOT NULL,
+  Created_At	    DATETIME2,
+  Updated_At	    DATETIME2,
+  CONSTRAINT PK_Licencia primary key (Codigo_Id),
+  CONSTRAINT FK_LEntidad FOREIGN KEY (Entidad_Id) REFERENCES Entidad (Codigo_Id) ON DELETE CASCADE
  );
 
 
