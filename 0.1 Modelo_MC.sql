@@ -36,8 +36,8 @@ IF object_id('dbo.Departamento') is not null
   Departamento_Id INT NOT NULL,
   Dane_Id		  INT NOT NULL,
   Nombre          VARCHAR(200) NOT NULL,
-  Created_At	 DATETIME2,
-  Updated_At	 DATETIME2,
+  Created_At	  DATETIME2,
+  Updated_At	  DATETIME2,
   CONSTRAINT PK_Municipio primary key (Dane_Id),
   CONSTRAINT FK_MDepartamento FOREIGN KEY (Departamento_Id) REFERENCES Departamento (Dane_Id) ON DELETE CASCADE
 );
@@ -49,8 +49,8 @@ CREATE TABLE dbo.Poblado (
   Poblado_Id	  INT NOT NULL,
   Nombre          VARCHAR(200) NOT NULL,
   Tipo      	  VARCHAR(50) NOT NULL,
-  Created_At	 DATETIME2,
-  Updated_At	 DATETIME2,
+  Created_At	  DATETIME2,
+  Updated_At	  DATETIME2,
   CONSTRAINT PK_Poblado primary key (Poblado_Id),
   CONSTRAINT FK_PMunicipio FOREIGN KEY (Municipio_Id) REFERENCES Municipio (Dane_Id) ON DELETE CASCADE
 );
@@ -62,8 +62,8 @@ CREATE TABLE dbo.Ubicacion (
   Direccion       VARCHAR(200) NOT NULL,
   Latitud   	  VARCHAR(50),	
   Longitud  	  VARCHAR(50),
-  Created_At	 DATETIME2,
-  Updated_At	 DATETIME2,
+  Created_At	  DATETIME2,
+  Updated_At	  DATETIME2,
   CONSTRAINT PK_Ubicacion primary key (Codigo_Id),
   CONSTRAINT FK_UPoblado FOREIGN KEY (Poblado_Id) REFERENCES Poblado (Poblado_Id) ON DELETE CASCADE
 );
@@ -77,8 +77,8 @@ CREATE TABLE dbo.Ubicacion (
   CodigoDane  	 INT NOT NULL,
   FiniFiscal     DATETIME NOT NULL,
   FfinFiscal     DATETIME NOT NULL,
-  Entidad_Padre  UNIQUEIDENTIFIER,
-  Ubicacion_Id   UNIQUEIDENTIFIER,
+  Entidad_Padre  UNIQUEIDENTIFIER NULL,
+  Ubicacion_Id   UNIQUEIDENTIFIER NULL,
   Created_At	 DATETIME2,
   Updated_At	 DATETIME2,
   CONSTRAINT AK_Nit UNIQUE(Nit),
@@ -108,8 +108,8 @@ CREATE TABLE dbo.Ubicacion (
   Password		  VARCHAR(100)  NOT NULL,
   PasswordDecrip  VARCHAR(100) NOT NULL,
   Estado          BIT,
-  Created_At	 DATETIME2,
-  Updated_At	 DATETIME2,
+  Created_At	  DATETIME2,
+  Updated_At	  DATETIME2,
   CONSTRAINT AK_Email UNIQUE(Email),
   CONSTRAINT PK_Usuario primary key (Codigo_Id)
  );
@@ -120,8 +120,8 @@ CREATE TABLE dbo.Ubicacion (
   Nombre		  VARCHAR(200)  NOT NULL,
   Estado          BIT,
   Descripcion     VARCHAR(200)  NOT NULL,
-  Created_At	 DATETIME2,
-  Updated_At	 DATETIME2,
+  Created_At	  DATETIME2,
+  Updated_At	  DATETIME2,
   CONSTRAINT PK_Rol primary key (Codigo_Id)
  );
 
@@ -134,8 +134,8 @@ CREATE TABLE dbo.Ubicacion (
   fecha_caducidad	DATETIME  NOT NULL,
   Estado            BIT,
   Descripcion       VARCHAR(200)  NOT NULL,
-  Created_At	 DATETIME2,
-  Updated_At	 DATETIME2,
+  Created_At	    DATETIME2,
+  Updated_At	    DATETIME2,
   CONSTRAINT PK_usuario_rol primary key (Usuario_Id, Rol_Id),
   CONSTRAINT FK_usuario FOREIGN KEY (Usuario_Id) REFERENCES Usuario (Codigo_Id) ON DELETE CASCADE,
   CONSTRAINT FK_rol FOREIGN KEY (Rol_Id) REFERENCES Rol (Codigo_Id) ON DELETE CASCADE
@@ -148,8 +148,8 @@ CREATE TABLE dbo.Ubicacion (
   fecha_caducidad	DATETIME  NOT NULL,
   Estado			BIT,
   Descripcion		VARCHAR(200)  NOT NULL,
-  Created_At	 DATETIME2,
-  Updated_At	 DATETIME2,
+  Created_At	    DATETIME2,
+  Updated_At	    DATETIME2,
   CONSTRAINT PK_entidad_usuario primary key (Entidad_Id, Usuario_Id),
   CONSTRAINT FK_uentidad FOREIGN KEY (Entidad_Id) REFERENCES Entidad (Codigo_Id) ON DELETE CASCADE,
   CONSTRAINT FK_cusuario FOREIGN KEY (Usuario_Id) REFERENCES Usuario (Codigo_Id) ON DELETE CASCADE
