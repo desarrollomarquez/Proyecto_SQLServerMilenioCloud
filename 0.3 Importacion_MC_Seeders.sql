@@ -40,7 +40,7 @@ SELECT * FROM Entidad_Usuario
 
 
 DECLARE @TABLA_INTER NVARCHAR(100) = 'Entidad';
-DECLARE @PARAMETROS NVARCHAR(500)= '800123654, LA CAYENA, 110, 255, 2018-04-25T15:50:59.997,2018-04-26T15:50:59.997, UNIQUEIDENTIFIER, UNIQUEIDENTIFIER'; 
+DECLARE @PARAMETROS NVARCHAR(500)= '800123654, LA CAYENA, 110, 255, 2018-04-25T15:50:59.997,2018-04-26T15:50:59.997, 0x00, 0x00 '; 
 DECLARE @CAMPOS		NVARCHAR(500);
 DECLARE @DATOS		NVARCHAR(500);
 DECLARE @QUERY		NVARCHAR(500);
@@ -48,14 +48,6 @@ DECLARE @CANTIDAD_PARAMETROS	INT;
 DECLARE @CANTIDAD_CAMPOS     	INT;
 DECLARE @ret_code			    INT=0;
 
-						SELECT
-						CASE 
-						WHEN ISNUMERIC(value) = 1 THEN  value
-						WHEN ISDATE(value) = 1 THEN 'CAST('+''''+value+''''+' AS DATETIME )' --'CAST('+''''+substring(TRIM(value),0,12)+''''+' AS DATETIME )'
-						--WHEN value = 'UNIQUEIDENTIFIER'  THEN 'CAST(0x00 AS UNIQUEIDENTIFIER )'
-						ELSE  ''''+value+''''
-						END
-						FROM STRING_SPLIT(@PARAMETROS, ',')
 
 
 BEGIN
@@ -80,7 +72,7 @@ ELSE
 						CASE 
 						WHEN ISNUMERIC(value) = 1 THEN  value
 						WHEN ISDATE(value) = 1 THEN 'CAST('+''''+value+''''+' AS DATETIME )' --'CAST('+''''+substring(TRIM(value),0,12)+''''+' AS DATETIME )'
-						WHEN value = '0x00' THEN 'CAST('+''''+value+''''+' AS UNIQUEIDENTIFIER )'
+						WHEN ISNULL(value,'') = '' THEN NULL
 						ELSE  ''''+value+''''
 						END
 						FROM STRING_SPLIT(@PARAMETROS, ',')
@@ -88,9 +80,15 @@ ELSE
 					), 1, 1, '') as DATOS
 				 )
 		
-		SET @QUERY = N'INSERT INTO '+@TABLA_INTER+' ( '+@CAMPOS +' ) VALUES ( NEWID(), '+@DATOS+', GETDATE(), NULL)';
+		 SELECT @DATOS
+
+	
+		--SET @QUERY = N'INSERT INTO '+@TABLA_INTER+' ( '+@CAMPOS +' ) VALUES ( NEWID(), '+@DATOS+', GETDATE(), NULL)';
 		--SET @QUERY = N' SELECT '+@CAMPOS+' FROM '+@TABLA_INTER;
-		SELECT @QUERY
+		
+		
+		--SELECT @QUERY 
+		--SELECT REPLACE(@QUERY,NULL,NULL)
 		
 		END
 	ELSE
@@ -118,24 +116,17 @@ END
 		END CATCH;
 
 
-
-
-		SELECT VALUE FROM STRING_SPLIT(@PARAMETROS, ',')
-
-	DECLARE @value UNIQUEIDENTIFIER= 0x00
-	SELECT CAST(@value AS UNIQUEIDENTIFIER)
-
-	SELECT 
-	CASE
-	WHEN ISNULL(@value,0) = 0 THEN '1'
-	ELSE '2' 
-	END;
-
-	
-
-
-
-
+SELECT 
+    SUBSTRING(
+    (
+        SELECT ',' +
+            CASE 
+                WHEN ISNUMERIC(REPLACE(VALUE, '''', '')) = 1 THEN REPLACE(VALUE, '''', '') 
+                ELSE VALUE 
+            END
+        FROM STRING_SPLIT( 'NULL', ',') -- aquí la fila con texto que deseo limpiar
+        FOR XML PATH ('')
+    ), 2, 1000) 
 
 SELECT * FROM Entidad
 
