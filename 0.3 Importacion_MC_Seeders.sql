@@ -80,7 +80,19 @@ ELSE
 					), 1, 1, '') as DATOS
 				 )
 		
-		 SELECT @DATOS
+		 
+				SELECT 
+					SUBSTRING(
+					(
+						SELECT ',' +
+							CASE 
+								WHEN ISNUMERIC(REPLACE(VALUE, '', '')) = 1 THEN REPLACE(VALUE, '', '') 
+								ELSE VALUE 
+							END
+						FROM STRING_SPLIT( @DATOS, ',') -- aquí la fila con texto que deseo limpiar
+						FOR XML PATH ('')
+					), 2, 1000) 
+
 
 	
 		--SET @QUERY = N'INSERT INTO '+@TABLA_INTER+' ( '+@CAMPOS +' ) VALUES ( NEWID(), '+@DATOS+', GETDATE(), NULL)';
@@ -145,9 +157,9 @@ where text like '%table exists%'
 --'Telefono', '16, PUERTO OSCURO';
 
 
-DECLARE @ret_code INT;
-EXECUTE @ret_code = sp_mc_insert 'Entidad', '800123654, LA CAYENA, 110, 255, 2018-04-25T15:50:59.997,2018-04-26T15:50:59.997, 0x0, 0x0';
-SELECT @ret_code;
+--DECLARE @ret_code INT;
+EXECUTE sp_mc_insert_entidad '800123655', 'LA CAYENA', 110, 255, '2018-04-25T15:50:59.997','2018-04-26T15:50:59.997', NULL, NULL;
+--SELECT @ret_code;
 
 
 SELECT * FROM Entidad
