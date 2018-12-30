@@ -23,9 +23,9 @@ SET NOCOUNT ON
 			IF (SELECT E.Nit FROM dbo.Entidad E WHERE E.Nit = @Nit AND E.Entidad_Padre IS NULL) IS NULL 
 					BEGIN TRY 
 							INSERT INTO [dbo].[Entidad]
-							([Codigo_Id],[Nit],[Nombre],[CodigoEntidad],[CodigoDane],[FiniFiscal],[FfinFiscal],[Entidad_Padre],[Ubicacion_Id],[Created_At],[Updated_At])
+							([Codigo_Id],[Nit],[Nombre],[CodigoEntidad],[CodigoDane],[FiniFiscal],[FfinFiscal],[Entidad_Padre],[Ubicacion_Id])
 							VALUES
-							(NEWID(), @Nit, @Nombre, @CodigoEntidad, @CodigoDane, @FiniFiscal, @FfinFiscal, NULL, @Ubicacion_Id,GETDATE(), NULL)
+							(NEWID(), @Nit, @Nombre, @CodigoEntidad, @CodigoDane, @FiniFiscal, @FfinFiscal, NULL, @Ubicacion_Id)
 							BEGIN
 								SELECT  'Se Registro Correctamente la Entidad: '+@Nombre AS Msg  FOR JSON PATH , WITHOUT_ARRAY_WRAPPER;
 							END
@@ -42,9 +42,9 @@ SET NOCOUNT ON
 						(SELECT E.Codigo_Id FROM dbo.Entidad E WHERE E.Nit = @Nit AND E.Entidad_Padre IS NULL)=@Entidad_Padre)
 					BEGIN TRY 
 							INSERT INTO [dbo].[Entidad]
-						   ([Codigo_Id],[Nit],[Nombre],[CodigoEntidad],[CodigoDane],[FiniFiscal],[FfinFiscal],[Entidad_Padre],[Ubicacion_Id],[Created_At],[Updated_At])
+						   ([Codigo_Id],[Nit],[Nombre],[CodigoEntidad],[CodigoDane],[FiniFiscal],[FfinFiscal],[Entidad_Padre],[Ubicacion_Id])
 							VALUES
-						   (NEWID(), @Nit, @Nombre, @CodigoEntidad, @CodigoDane, @FiniFiscal, @FfinFiscal, @Entidad_Padre, @Ubicacion_Id,GETDATE(), NULL)
+						   (NEWID(), @Nit, @Nombre, @CodigoEntidad, @CodigoDane, @FiniFiscal, @FfinFiscal, @Entidad_Padre, @Ubicacion_Id)
 							BEGIN
 								SELECT  'Se Registro Correctamente la Sede: '+@Nombre AS Msg  FOR JSON PATH , WITHOUT_ARRAY_WRAPPER;
 							END
