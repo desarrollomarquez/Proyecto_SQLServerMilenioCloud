@@ -83,7 +83,6 @@ CREATE TABLE dbo.Ubicacion (
   Ubicacion_Id   UNIQUEIDENTIFIER NULL,
   Created_At	 DATETIME2,
   Updated_At	 DATETIME2,
-  CONSTRAINT AK_Nit UNIQUE(Nit),
   CONSTRAINT PK_Entidad primary key (Codigo_Id),
   CONSTRAINT FK_EEntidad_Padre FOREIGN KEY (Entidad_Padre) REFERENCES Entidad (Codigo_Id),
   CONSTRAINT FK_EUbicacion FOREIGN KEY (Ubicacion_Id) REFERENCES Ubicacion (Codigo_Id) ON DELETE CASCADE
