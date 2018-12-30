@@ -20,26 +20,46 @@ BEGIN
 
 SET NOCOUNT ON 
 
-	   BEGIN TRY  
+			IF (SELECT E.Nit FROM dbo.Entidad E WHERE E.Nit = @Nit AND E.Entidad_Padre IS NULL) IS NULL 
+					BEGIN TRY 
+							INSERT INTO [dbo].[Entidad]
+							([Codigo_Id],[Nit],[Nombre],[CodigoEntidad],[CodigoDane],[FiniFiscal],[FfinFiscal],[Entidad_Padre],[Ubicacion_Id],[Created_At],[Updated_At])
+							VALUES
+							(NEWID(), @Nit, @Nombre, @CodigoEntidad, @CodigoDane, @FiniFiscal, @FfinFiscal, NULL, @Ubicacion_Id,GETDATE(), NULL)
+							BEGIN
+								SELECT  'Se Registro Correctamente la Entidad: '+@Nombre AS Msg  FOR JSON PATH , WITHOUT_ARRAY_WRAPPER;
+							END
+					END TRY
+					BEGIN CATCH
+						SELECT   
+						ERROR_NUMBER() AS ErrorNumber,   
+						ERROR_PROCEDURE() AS ErrorProcedure,  
+						ERROR_MESSAGE() AS ErrorMessage
+						FOR JSON PATH, WITHOUT_ARRAY_WRAPPER;
+					END CATCH;
 			
-			INSERT INTO [dbo].[Entidad]
-					   ([Codigo_Id],[Nit],[Nombre],[CodigoEntidad],[CodigoDane],[FiniFiscal],[FfinFiscal],[Entidad_Padre],[Ubicacion_Id],[Created_At],[Updated_At])
-				   VALUES
-					   (NEWID(), @Nit, @Nombre, @CodigoEntidad, @CodigoDane, @FiniFiscal, @FfinFiscal, @Entidad_Padre, @Ubicacion_Id,GETDATE(), NULL);
+			ELSE IF ((SELECT E.Entidad_Padre FROM dbo.Entidad E WHERE E.Nit = @Nit AND E.Entidad_Padre IS NULL ) IS NULL AND @Entidad_Padre IS NOT NULL AND
+						(SELECT E.Codigo_Id FROM dbo.Entidad E WHERE E.Nit = @Nit AND E.Entidad_Padre IS NULL)=@Entidad_Padre)
+					BEGIN TRY 
+							INSERT INTO [dbo].[Entidad]
+						   ([Codigo_Id],[Nit],[Nombre],[CodigoEntidad],[CodigoDane],[FiniFiscal],[FfinFiscal],[Entidad_Padre],[Ubicacion_Id],[Created_At],[Updated_At])
+							VALUES
+						   (NEWID(), @Nit, @Nombre, @CodigoEntidad, @CodigoDane, @FiniFiscal, @FfinFiscal, @Entidad_Padre, @Ubicacion_Id,GETDATE(), NULL)
+							BEGIN
+								SELECT  'Se Registro Correctamente la Sede: '+@Nombre AS Msg  FOR JSON PATH , WITHOUT_ARRAY_WRAPPER;
+							END
+					END TRY
+					BEGIN CATCH
+						SELECT   
+						ERROR_NUMBER() AS ErrorNumber,   
+						ERROR_PROCEDURE() AS ErrorProcedure,  
+						ERROR_MESSAGE() AS ErrorMessage
+						FOR JSON PATH, WITHOUT_ARRAY_WRAPPER;
+					END CATCH;
+			ELSE	
+					BEGIN
+								SELECT  'Verificar los Parametros Ingresados para la Entidad : '+@Nombre AS Msg  FOR JSON PATH , WITHOUT_ARRAY_WRAPPER;
+					END
 		
-			SELECT   
-			'Inserto Correctamente' AS Result 
-			FOR JSON PATH , WITHOUT_ARRAY_WRAPPER;
-
-		END TRY
-		BEGIN CATCH
-			SELECT   
-			ERROR_NUMBER() AS ErrorNumber,   
-			ERROR_PROCEDURE() AS ErrorProcedure,  
-			ERROR_MESSAGE() AS ErrorMessage
-			FOR JSON PATH;
-		END CATCH;
-
 END
-
 GO
