@@ -52,7 +52,7 @@ DELETE R
 FROM dbo.Entidad R;
 
 --DECLARE @ret_code INT;
-EXECUTE sp_mc_insert_entidad 800123655, 'LA CAYENA', 110, 255, '2018-04-25T15:50:59.997','2018-04-26T15:50:59.997', NULL, NULL;
+EXECUTE sp_mc_insert_entidad 900555655, 'LA MOTA', 100, 100, '2018-04-25T15:50:59.997','2018-04-26T15:50:59.997', NULL, NULL;
 --SELECT @ret_code;
 
 
@@ -73,64 +73,68 @@ SELECT * FROM Municipio WHERE Dane_Id=22222
 --3	Error has occurred getting sales value.
 --4	NULL sales value found for the salesperson.
 
+DECLARE @TABLA					NVARCHAR(500)= 'Persona';
+DECLARE @CAMPOS					NVARCHAR(500)='NumeroIdentificacion, Sexo, Nacionalidad';
+DECLARE @PARAMETROS				NVARCHAR(500);--='8355196';
+DECLARE @QUERY					NVARCHAR(500);
+DECLARE @NOMBRE					NVARCHAR(500);
+DECLARE @STRING					NVARCHAR(500);
 
-
-DECLARE @Nit			INT= 800123655,
-	    @Nombre			VARCHAR(200) = 'LA LLANURA - SUR',
-	    @CodigoEntidad  INT= 110,
-	    @CodigoDane	    INT= 255,
-        @FiniFiscal	    DATETIME = '2018-04-25T15:50:59.997',
-	    @FfinFiscal	    DATETIME = '2018-04-26T15:50:59.997',
-        @Entidad_Padre  UNIQUEIDENTIFIER = 'B9237A48-6303-49A5-A4E0-4E43FB6FCB32',
-	    @Ubicacion_Id   UNIQUEIDENTIFIER = NULL,
-		@SEDE		    INT
-
+DECLARE @CANTIDAD_PARAMETROS	INT;
+DECLARE @CANTIDAD_CAMPOS     	INT;
+DECLARE @ret_code			    INT=0;
 
 BEGIN
 
-SET NOCOUNT ON 
+SET @STRING = ( SELECT STUFF(
+					(	SELECT
+						CAST(', ' AS VARCHAR(MAX)) + 
+					    CASE
+						WHEN VALUE =' Nombre' THEN 'TI.Nombre AS TipoIdentificacion, E.Nombre AS Entidad'
+						ELSE VALUE
+						END
+						FROM STRING_SPLIT(@CAMPOS, ',')
+						FOR XML PATH('')
+					), 1, 1, '') as DATOS
+				 )
 
+IF @CAMPOS IS NULL OR @CAMPOS =''
+	BEGIN
+	SET @QUERY = N' SELECT TI.Nombre as TipoIdentificacion, P.NumeroIdentificacion, P.Nombres, P.Apellidos, P.Sexo, P.FNacimiento, P.Nacionalidad, P.LibretaMilitar, P.TipoSangre, P.Estado, E.Nit, E.Nombre FROM Persona P INNER JOIN Usuario U ON P.Codigo_Id = U.Persona_Id INNER JOIN Entidad_Usuario EU ON U.Codigo_Id = EU.Usuario_Id INNER JOIN Entidad E ON E.Codigo_Id = EU.Entidad_Id INNER JOIN TipoIdentificacion TI ON P.TipoIdentificacion_Id = TI.Codigo_Id';
+	END
 
-			IF (SELECT E.Nit FROM dbo.Entidad E WHERE E.Nit = @Nit AND E.Entidad_Padre IS NULL) IS NULL 
-					BEGIN TRY 
-							INSERT INTO [dbo].[Entidad]
-							([Codigo_Id],[Nit],[Nombre],[CodigoEntidad],[CodigoDane],[FiniFiscal],[FfinFiscal],[Entidad_Padre],[Ubicacion_Id],[Created_At],[Updated_At])
-							VALUES
-							(NEWID(), @Nit, @Nombre, @CodigoEntidad, @CodigoDane, @FiniFiscal, @FfinFiscal, NULL, @Ubicacion_Id,GETDATE(), NULL)
-							BEGIN
-								SELECT  'Se Registro Correctamente la entidad: '+@Nombre AS Msg  FOR JSON PATH , WITHOUT_ARRAY_WRAPPER;
-							END
-					END TRY
-					BEGIN CATCH
-						SELECT   
-						ERROR_NUMBER() AS ErrorNumber,   
-						ERROR_PROCEDURE() AS ErrorProcedure,  
-						ERROR_MESSAGE() AS ErrorMessage
-						FOR JSON PATH, WITHOUT_ARRAY_WRAPPER;
-					END CATCH;
-			
-			ELSE IF ((SELECT E.Entidad_Padre FROM dbo.Entidad E WHERE E.Nit = @Nit AND E.Entidad_Padre IS NULL ) IS NULL AND @Entidad_Padre IS NOT NULL AND
-						(SELECT E.Codigo_Id FROM dbo.Entidad E WHERE E.Nit = @Nit AND E.Entidad_Padre IS NULL)=@Entidad_Padre)
-					BEGIN TRY 
-							INSERT INTO [dbo].[Entidad]
-						   ([Codigo_Id],[Nit],[Nombre],[CodigoEntidad],[CodigoDane],[FiniFiscal],[FfinFiscal],[Entidad_Padre],[Ubicacion_Id],[Created_At],[Updated_At])
-							VALUES
-						   (NEWID(), @Nit, @Nombre, @CodigoEntidad, @CodigoDane, @FiniFiscal, @FfinFiscal, @Entidad_Padre, @Ubicacion_Id,GETDATE(), NULL)
-							BEGIN
-								SELECT  'Se Registro Correctamente la sede: '+@Nombre AS Msg  FOR JSON PATH , WITHOUT_ARRAY_WRAPPER;
-							END
-					END TRY
-					BEGIN CATCH
-						SELECT   
-						ERROR_NUMBER() AS ErrorNumber,   
-						ERROR_PROCEDURE() AS ErrorProcedure,  
-						ERROR_MESSAGE() AS ErrorMessage
-						FOR JSON PATH, WITHOUT_ARRAY_WRAPPER;
-					END CATCH;
-			ELSE	
-					BEGIN
-								SELECT  'Verificar los parametros ingresados para la sede de la entidad: '+@Nombre AS Msg  FOR JSON PATH , WITHOUT_ARRAY_WRAPPER;
-					END
-		
+ELSE IF @PARAMETROS IS NULL OR @PARAMETROS =''
+		BEGIN
+		SET @QUERY = N' SELECT '+@STRING+' FROM Persona P INNER JOIN Usuario U ON P.Codigo_Id = U.Persona_Id INNER JOIN Entidad_Usuario EU ON U.Codigo_Id = EU.Usuario_Id INNER JOIN Entidad E ON E.Codigo_Id = EU.Entidad_Id INNER JOIN TipoIdentificacion TI ON P.TipoIdentificacion_Id = TI.Codigo_Id';
+		END
+	ELSE 
+		BEGIN
+		SET @QUERY = N' SELECT TI.Nombre as TipoIdentificacion, P.NumeroIdentificacion, P.Nombres, P.Apellidos, P.Sexo, P.FNacimiento, P.Nacionalidad, P.LibretaMilitar, P.TipoSangre, P.Estado, E.Nit, E.Nombre FROM Persona P INNER JOIN Usuario U ON P.Codigo_Id = U.Persona_Id INNER JOIN Entidad_Usuario EU ON U.Codigo_Id = EU.Usuario_Id INNER JOIN Entidad E ON E.Codigo_Id = EU.Entidad_Id INNER JOIN TipoIdentificacion TI ON P.TipoIdentificacion_Id = TI.Codigo_Id';
+		END
+	
+BEGIN TRY  
+	EXECUTE sp_executesql @QUERY;
+END TRY
+BEGIN CATCH  
+SELECT   
+	ERROR_NUMBER() AS ErrorNumber,   
+	ERROR_PROCEDURE() AS ErrorProcedure,  
+	ERROR_MESSAGE() AS ErrorMessage;
+END CATCH;
+	
 END
 
+
+SELECT 
+TI.Nombre as TipoIdentificacion, P.NumeroIdentificacion, P.Nombres, P.Apellidos, P.Sexo, P.FNacimiento, P.Nacionalidad, P.LibretaMilitar, P.TipoSangre, P.Estado,
+E.Nit, E.Nombre
+FROM Persona P
+INNER JOIN Usuario U ON P.Codigo_Id = U.Persona_Id
+INNER JOIN Entidad_Usuario EU ON U.Codigo_Id = EU.Usuario_Id
+INNER JOIN Entidad E ON E.Codigo_Id = EU.Entidad_Id
+INNER JOIN TipoIdentificacion TI ON P.TipoIdentificacion_Id = TI.Codigo_Id
+
+
+
+
+SELECT * FROM TipoIdentificacion
