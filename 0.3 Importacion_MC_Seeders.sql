@@ -54,7 +54,7 @@ FROM dbo.Entidad R;
 --DECLARE @ret_code INT;
 EXECUTE sp_mc_insert_entidad 900555655, 'LA MOTA', 100, 100, '2018-04-25T15:50:59.997','2018-04-26T15:50:59.997', NULL, NULL;
 --SELECT @ret_code;
-
+EXECUTE sp_mc_select_persona 'Nit', '800123655'
 
                 
 
@@ -74,15 +74,11 @@ SELECT * FROM Municipio WHERE Dane_Id=22222
 --4	NULL sales value found for the salesperson.
 
 DECLARE @TABLA					NVARCHAR(500)= 'Persona';
-DECLARE @CAMPOS					NVARCHAR(500)='NumeroIdentificacion, Sexo, Nacionalidad';
-DECLARE @PARAMETROS				NVARCHAR(500);--='8355196';
+DECLARE @CAMPOS					NVARCHAR(500)='Nit';
+DECLARE @PARAMETROS				NVARCHAR(500)='900555655';
 DECLARE @QUERY					NVARCHAR(500);
 DECLARE @NOMBRE					NVARCHAR(500);
-DECLARE @STRING					NVARCHAR(500);
-
-DECLARE @CANTIDAD_PARAMETROS	INT;
-DECLARE @CANTIDAD_CAMPOS     	INT;
-DECLARE @ret_code			    INT=0;
+DECLARE @STRING				    NVARCHAR(500);
 
 BEGIN
 
@@ -107,9 +103,9 @@ ELSE IF @PARAMETROS IS NULL OR @PARAMETROS =''
 		BEGIN
 		SET @QUERY = N' SELECT '+@STRING+' FROM Persona P INNER JOIN Usuario U ON P.Codigo_Id = U.Persona_Id INNER JOIN Entidad_Usuario EU ON U.Codigo_Id = EU.Usuario_Id INNER JOIN Entidad E ON E.Codigo_Id = EU.Entidad_Id INNER JOIN TipoIdentificacion TI ON P.TipoIdentificacion_Id = TI.Codigo_Id';
 		END
-	ELSE 
+ELSE 
 		BEGIN
-		SET @QUERY = N' SELECT TI.Nombre as TipoIdentificacion, P.NumeroIdentificacion, P.Nombres, P.Apellidos, P.Sexo, P.FNacimiento, P.Nacionalidad, P.LibretaMilitar, P.TipoSangre, P.Estado, E.Nit, E.Nombre FROM Persona P INNER JOIN Usuario U ON P.Codigo_Id = U.Persona_Id INNER JOIN Entidad_Usuario EU ON U.Codigo_Id = EU.Usuario_Id INNER JOIN Entidad E ON E.Codigo_Id = EU.Entidad_Id INNER JOIN TipoIdentificacion TI ON P.TipoIdentificacion_Id = TI.Codigo_Id';
+		SET @QUERY = N' SELECT TI.Nombre as TipoIdentificacion, P.NumeroIdentificacion, P.Nombres, P.Apellidos, P.Sexo, P.FNacimiento, P.Nacionalidad, P.LibretaMilitar, P.TipoSangre, P.Estado, E.Nit, E.Nombre FROM Persona P INNER JOIN Usuario U ON P.Codigo_Id = U.Persona_Id INNER JOIN Entidad_Usuario EU ON U.Codigo_Id = EU.Usuario_Id INNER JOIN Entidad E ON E.Codigo_Id = EU.Entidad_Id INNER JOIN TipoIdentificacion TI ON P.TipoIdentificacion_Id = TI.Codigo_Id WHERE '+@CAMPOS+' = '+@PARAMETROS;
 		END
 	
 BEGIN TRY  
@@ -125,6 +121,8 @@ END CATCH;
 END
 
 
+
+
 SELECT 
 TI.Nombre as TipoIdentificacion, P.NumeroIdentificacion, P.Nombres, P.Apellidos, P.Sexo, P.FNacimiento, P.Nacionalidad, P.LibretaMilitar, P.TipoSangre, P.Estado,
 E.Nit, E.Nombre
@@ -133,8 +131,27 @@ INNER JOIN Usuario U ON P.Codigo_Id = U.Persona_Id
 INNER JOIN Entidad_Usuario EU ON U.Codigo_Id = EU.Usuario_Id
 INNER JOIN Entidad E ON E.Codigo_Id = EU.Entidad_Id
 INNER JOIN TipoIdentificacion TI ON P.TipoIdentificacion_Id = TI.Codigo_Id
-
+WHERE 
 
 
 
 SELECT * FROM TipoIdentificacion
+
+
+						SELECT
+						CAST(', ' AS VARCHAR(MAX)) + 
+					    CASE
+						WHEN VALUE =' Nombre' THEN 'TI.Nombre AS TipoIdentificacion, E.Nombre AS Entidad'
+						ELSE VALUE
+						END
+						
+						FROM STRING_SPLIT(@CAMPOS, ',')
+						UNION
+						SELECT
+--						CAST(', ' AS VARCHAR(MAX)) + 
+					    CASE
+						WHEN VALUE =' Nombre' THEN 'TI.Nombre AS TipoIdentificacion, E.Nombre AS Entidad'
+						ELSE VALUE
+						END 
+--						+' = '
+						FROM STRING_SPLIT(@PARAMETROS, ',')
