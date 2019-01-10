@@ -32,16 +32,16 @@ SET @STRING = ( SELECT STUFF(
 
 IF @CAMPOS IS NULL OR @CAMPOS =''
 	BEGIN
-	SET @QUERY = N' SELECT TI.Nombre as TipoIdentificacion, P.NumeroIdentificacion, P.Nombres, P.Apellidos, P.Sexo, P.FNacimiento, P.Nacionalidad, P.LibretaMilitar, P.TipoSangre, P.Estado, E.Nit, E.Nombre FROM Persona P INNER JOIN Usuario U ON P.Codigo_Id = U.Persona_Id INNER JOIN Entidad_Usuario EU ON U.Codigo_Id = EU.Usuario_Id INNER JOIN Entidad E ON E.Codigo_Id = EU.Entidad_Id INNER JOIN TipoIdentificacion TI ON P.TipoIdentificacion_Id = TI.Codigo_Id';
+	SET @QUERY = N' SELECT TI.Nombre as TipoIdentificacion, P.NumeroIdentificacion, P.Nombres, P.Apellidos, P.Sexo, P.FNacimiento, P.Nacionalidad, P.LibretaMilitar, P.TipoSangre, P.Estado_Persona, E.Nit, E.Nombre FROM Persona P INNER JOIN Entidad_Persona_Rol EPR ON P.Codigo_Id = EPR.Persona_Id INNER JOIN Entidad E ON E.Codigo_Id = EPR.Entidad_Id INNER JOIN Rol R ON R.Codigo_Id = EPR.Rol_Id INNER JOIN TipoIdentificacion TI ON P.TipoIdentificacion_Id = TI.Codigo_Id';
 	END
 
 ELSE IF @PARAMETROS IS NULL OR @PARAMETROS =''
 		BEGIN
-		SET @QUERY = N' SELECT '+@STRING+' FROM Persona P INNER JOIN Usuario U ON P.Codigo_Id = U.Persona_Id INNER JOIN Entidad_Usuario EU ON U.Codigo_Id = EU.Usuario_Id INNER JOIN Entidad E ON E.Codigo_Id = EU.Entidad_Id INNER JOIN TipoIdentificacion TI ON P.TipoIdentificacion_Id = TI.Codigo_Id';
+		SET @QUERY = N' SELECT '+@CAMPOS+' FROM Persona P INNER JOIN Entidad_Persona_Rol EPR ON P.Codigo_Id = EPR.Persona_Id INNER JOIN Entidad E ON E.Codigo_Id = EPR.Entidad_Id INNER JOIN Rol R ON R.Codigo_Id = EPR.Rol_Id INNER JOIN TipoIdentificacion TI ON P.TipoIdentificacion_Id = TI.Codigo_Id';
 		END
 ELSE 
 		BEGIN
-		SET @QUERY = N' SELECT TI.Nombre as TipoIdentificacion, P.NumeroIdentificacion, P.Nombres, P.Apellidos, P.Sexo, P.FNacimiento, P.Nacionalidad, P.LibretaMilitar, P.TipoSangre, P.Estado, E.Nit, E.Nombre FROM Persona P INNER JOIN Usuario U ON P.Codigo_Id = U.Persona_Id INNER JOIN Entidad_Usuario EU ON U.Codigo_Id = EU.Usuario_Id INNER JOIN Entidad E ON E.Codigo_Id = EU.Entidad_Id INNER JOIN TipoIdentificacion TI ON P.TipoIdentificacion_Id = TI.Codigo_Id WHERE '+@CAMPOS+' = '+@PARAMETROS;
+		SET @QUERY = N' SELECT TI.Nombre as TipoIdentificacion, P.NumeroIdentificacion, P.Nombres, P.Apellidos, P.Sexo, P.FNacimiento, P.Nacionalidad, P.LibretaMilitar, P.TipoSangre, P.Estado_Persona, E.Nit, E.Nombre FROM Persona P INNER JOIN Entidad_Persona_Rol EPR ON P.Codigo_Id = EPR.Persona_Id INNER JOIN Entidad E ON E.Codigo_Id = EPR.Entidad_Id INNER JOIN Rol R ON R.Codigo_Id = EPR.Rol_Id INNER JOIN TipoIdentificacion TI ON P.TipoIdentificacion_Id = TI.Codigo_Id WHERE '+@CAMPOS+' = '+@PARAMETROS;
 		END
 	
 BEGIN TRY  
